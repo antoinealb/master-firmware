@@ -7,6 +7,8 @@
 #include <lwip/netif.h>
 #include <lwip/dhcp.h>
 
+#include <arm-cortex-mpu/mpu.h>
+
 #include "main.h"
 #include "commands.h"
 #include "sntp/sntp.h"
@@ -69,6 +71,10 @@ void panic_hook(const char *reason)
 /** Late init hook, called before c++ static constructors. */
 void __late_init(void)
 {
+    /* Initalize memory protection unit and add a guard against NULL
+     * dereferences. */
+    mpu_init();
+
     /* C++ Static initializer requires working chibios. */
     halInit();
     chSysInit();

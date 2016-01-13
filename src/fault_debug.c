@@ -95,31 +95,3 @@ void UsageFault_Handler(void) {
 
 
 }
-
-void MemManage_Handler(void) {
-    //Copy to local variables (not pointers) to allow GDB "i loc" to directly show the info
-    //Get thread context. Contains main registers including PC and LR
-    struct port_extctx ctx;
-    memcpy(&ctx, (void*)__get_PSP(), sizeof(struct port_extctx));
-    (void)ctx;
-    //Interrupt status register: Which interrupt have we encountered, e.g. HardFault?
-    FaultType faultType = (FaultType)__get_IPSR();
-    (void)faultType;
-    //For HardFault/BusFault this is the address that was accessed causing the error
-    uint32_t faultAddress = SCB->MMFAR;
-    (void)faultAddress;
-    //Flags about hardfault / busfault
-    //See http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0552a/Cihdjcfc.html for reference
-    bool isInstructionAccessViolation = ((SCB->CFSR >> SCB_CFSR_MEMFAULTSR_Pos) & (1 << 0) ? true : false);
-    bool isDataAccessViolation = ((SCB->CFSR >> SCB_CFSR_MEMFAULTSR_Pos) & (1 << 1) ? true : false);
-    bool isExceptionUnstackingFault = ((SCB->CFSR >> SCB_CFSR_MEMFAULTSR_Pos) & (1 << 3) ? true : false);
-    bool isExceptionStackingFault = ((SCB->CFSR >> SCB_CFSR_MEMFAULTSR_Pos) & (1 << 4) ? true : false);
-    bool isFaultAddressValid = ((SCB->CFSR >> SCB_CFSR_MEMFAULTSR_Pos) & (1 << 7) ? true : false);
-    (void)isInstructionAccessViolation;
-    (void)isDataAccessViolation;
-    (void)isExceptionUnstackingFault;
-    (void)isExceptionStackingFault;
-    (void)isFaultAddressValid;
-    palSetPad(GPIOF, GPIOF_LED_POWER_ERROR);
-    while(1);
-}
