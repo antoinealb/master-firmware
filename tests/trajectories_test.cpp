@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include "../src/trajectories.h"
 #include "CppUTest/TestHarness.h"
 
