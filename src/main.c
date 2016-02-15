@@ -16,6 +16,7 @@
 #include "uavcan_node.h"
 #include "timestamp/timestamp_stm32.h"
 #include "usbconf.h"
+#include "usbconf_ethernet.h"
 #include "config.h"
 #include "interface_panel.h"
 #include "robot_pose.h"
@@ -96,6 +97,11 @@ int main(void) {
     chThdSleepMilliseconds(1500);
     usbStart(serusbcfg.usbp, &usbcfg);
     usbConnectBus(serusbcfg.usbp);
+
+    usbDisconnectBus(&USBD2);
+    chThdSleepMilliseconds(1500);
+    usbStart(&USBD2, &ethernet_usbcfg);
+    usbConnectBus(&USBD2);
 
     /* Shell manager initialization.  */
     shellInit();

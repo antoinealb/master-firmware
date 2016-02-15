@@ -23,6 +23,7 @@ target.arm:
     - src/uavcan_node.cpp
     - src/blocking_uart_driver.c
     - src/usbconf.c
+    - src/usbconf_ethernet.c
     - src/config.c
     - src/interface_panel.c
     - src/robot_pose.c
