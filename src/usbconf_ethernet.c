@@ -28,9 +28,9 @@ static const USBDescriptor vcom_device_descriptor = {
 };
 
 /* Configuration Descriptor tree for a CDC.*/
-static const uint8_t vcom_configuration_descriptor_data[70] = {
+static const uint8_t vcom_configuration_descriptor_data[71] = {
     /* Configuration Descriptor, 9 bytes*/
-    USB_DESC_CONFIGURATION(70,            /* wTotalLength.                    */
+    USB_DESC_CONFIGURATION(71,            /* wTotalLength.                    */
             0x02,          /* bNumInterfaces.                  */
             0x01,          /* bConfigurationValue.             */
             0,             /* iConfiguration.                  */
@@ -53,15 +53,16 @@ static const uint8_t vcom_configuration_descriptor_data[70] = {
                                              Functional Descriptor.           */
     USB_DESC_BCD          (0x0110),       /* bcdCDC.                          */
     /* Ethernet networking functional descriptor */
-    USB_DESC_BYTE         (12), /* Length */
+    USB_DESC_BYTE         (13), /* Length */
+    USB_DESC_BYTE         (0x24),         /* bDescriptorType (CS_INTERFACE).  */
     USB_DESC_BYTE         (0xf),         /* Ethernet func desc */
-    USB_DESC_BYTE         (4),         /*  Mac address pointer */
-    USB_DESC_BYTE         (0),         /*  Statistics */
+    USB_DESC_INDEX        (4),           /*  Mac address pointer */
+    USB_DESC_BYTE         (0),           /*  Statistics */
     USB_DESC_BYTE         (0),
     USB_DESC_BYTE         (0),
     USB_DESC_BYTE         (0),
-    USB_DESC_WORD         (1514),   /* MTU */
-    USB_DESC_WORD         (0x00),   /* No multicast support */
+    USB_DESC_WORD         (1514),        /* MTU */
+    USB_DESC_WORD         (0x00),        /* No multicast support */
     USB_DESC_BYTE         (0),
 
     /* Union Functional Descriptor.*/
@@ -139,6 +140,7 @@ static const uint8_t vcom_string3[] = {
     '1' + CH_KERNEL_PATCH, 0
 };
 
+/* MAC address string */
 static const uint8_t vcom_string4[] = {
     USB_DESC_BYTE(26),                     /* bLength.                         */
     USB_DESC_BYTE(USB_DESCRIPTOR_STRING), /* bDescriptorType.                 */
@@ -171,7 +173,7 @@ static const USBDescriptor *get_descriptor(USBDriver *usbp,
         case USB_DESCRIPTOR_CONFIGURATION:
             return &vcom_configuration_descriptor;
         case USB_DESCRIPTOR_STRING:
-            if (dindex < 5)
+            if (dindex < sizeof(vcom_strings)/sizeof(vcom_strings[0]))
                 return &vcom_strings[dindex];
     }
     return NULL;
