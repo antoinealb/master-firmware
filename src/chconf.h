@@ -440,6 +440,8 @@
  */
 #define CH_CFG_CONTEXT_SWITCH_HOOK(ntp, otp) {                              \
   /* System halt code here.*/                                               \
+  extern void trace_thread(void *); \
+  trace_thread(ntp);\
 }
 
 /**

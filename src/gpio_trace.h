@@ -8,6 +8,7 @@ extern "C" {
 void trace_toggle(unsigned int pin);
 void trace_set(unsigned int pin);
 void trace_clear(unsigned int pin);
+void trace_set_map(unsigned int map, unsigned int mask);
 
 #ifdef __cplusplus
 }

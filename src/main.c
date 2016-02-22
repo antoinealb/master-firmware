@@ -91,6 +91,29 @@ void panic_hook(const char *reason)
     }
 }
 
+#include "gpio_trace.h"
+
+void *uavcan_thread_ptr = NULL;
+void *lwip_thread_ptr = NULL;
+extern stkalign_t wa_rpc_server[2048];
+void *msg_server_ptr = NULL;
+
+void trace_thread(void *p)
+{
+    trace_set_map(0, 0x0f);
+    if (p == uavcan_thread_ptr) {
+        trace_set(0);
+    } else if (p == lwip_thread_ptr) {
+        trace_set(1);
+    } else if (p == &wa_rpc_server) {
+        trace_set(2);
+    } else if (p == msg_server_ptr) {
+        trace_set(3);
+    } else {
+        trace_set(4);
+    }
+}
+
 /** Late init hook, called before c++ static constructors. */
 void __late_init(void)
 {

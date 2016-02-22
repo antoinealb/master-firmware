@@ -171,6 +171,7 @@ void main(void *arg)
     res = velocity_pid_sub.start(
         [&](const uavcan::ReceivedDataStructure<cvra::motor::feedback::VelocityPID>& msg)
         {
+            trace_toggle(5);
             motor_driver_t *driver = (motor_driver_t*)bus_enumerator_get_driver_by_can_id(&bus_enumerator, msg.getSrcNodeID().get());
             if (driver != NULL) {
                 motor_driver_set_stream_value(driver, MOTOR_STREAM_VELOCITY, msg.velocity);
@@ -311,6 +312,7 @@ void main(void *arg)
         motor_driver_t *drv_list;
         uint16_t drv_list_len;
         motor_manager_get_list(&motor_manager, &drv_list, &drv_list_len);
+        trace_toggle(6);
         int i;
         for (i = 0; i < drv_list_len; i++) {
             motor_driver_uavcan_update_config(&drv_list[i]);
@@ -344,9 +346,12 @@ static void node_fail(const char *reason)
 
 extern "C" {
 
+extern "C" void *uavcan_thread_ptr;
+
 void uavcan_node_start(uint8_t id)
 {
     static uint8_t node_id = id;
+    uavcan_thread_ptr = &uavcan_node::thread_wa;
     chThdCreateStatic(uavcan_node::thread_wa, UAVCAN_NODE_STACK_SIZE, NORMALPRIO, uavcan_node::main, &node_id);
 }
 

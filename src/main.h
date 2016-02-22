@@ -13,6 +13,7 @@ extern "C" {
 #define MAX_NB_BUS_ENUMERATOR_ENTRIES   21
 
 #include "motor_manager.h"
+#include "gpio_trace.h"
 
 extern motor_manager_t motor_manager;
 

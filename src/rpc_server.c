@@ -216,7 +216,8 @@ void message_server_thread(void *arg)
 void message_server_init(void)
 {
     static THD_WORKING_AREA(wa_msg_server, 2048);
-
+    extern void *msg_server_ptr;
+    msg_server_ptr = &wa_msg_server;
     chThdCreateStatic(wa_msg_server,
                       2048,
                       RPC_SERVER_PRIO,

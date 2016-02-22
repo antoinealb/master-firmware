@@ -300,9 +300,12 @@ void lwip_thread(void *p) {
     }
 }
 
+extern void *lwip_thread_ptr;
+
 void ip_thread_init(void)
 {
     static THD_WORKING_AREA(wa_lwip_thread, LWIP_THREAD_STACK_SIZE);
+    lwip_thread_ptr = &wa_lwip_thread;
     /* Creates the LWIP threads (it changes priority internally).  */
     chThdCreateStatic(wa_lwip_thread,
                       LWIP_THREAD_STACK_SIZE,

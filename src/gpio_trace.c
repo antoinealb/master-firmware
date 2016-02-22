@@ -10,7 +10,7 @@ const uint8_t pin_table[8] = {
     GPIOD_PIN8,
     GPIOD_PIN9,
     GPIOD_PIN10
-}
+};
 
 void trace_toggle(unsigned int pin)
 {
@@ -31,4 +31,12 @@ void trace_clear(unsigned int pin)
     if (pin < sizeof(pin_table)) {
         palClearPad(GPIOD, pin_table[pin]);
     }
+}
+
+void trace_set_map(unsigned int map, unsigned int mask)
+{
+    mask = (mask & 0xff)<<3;
+    map = (map<<3) & mask;
+    palClearPort(GPIOD, mask);
+    palSetPort(GPIOD, map);
 }
