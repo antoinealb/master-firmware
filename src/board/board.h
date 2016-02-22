@@ -590,14 +590,14 @@
  * PD0  - CAN1RX                    (alternate 9).
  * PD1  - CAN1TX                    (alternate 9).
  * PD2  - SD_CMD                    (alternate 12).
- * PD3  - PIN3                      (input pullup).
- * PD4  - PIN4                      (input pullup).
- * PD5  - PIN5                      (input pullup).
- * PD6  - PIN6                      (input pullup).
- * PD7  - PIN7                      (input pullup).
- * PD8  - PIN8                      (input pullup).
- * PD9  - PIN9                      (input pullup).
- * PD10 - PIN10                     (input pullup).
+ * PD3  - PIN3                      (output low).
+ * PD4  - PIN4                      (output low).
+ * PD5  - PIN5                      (output low).
+ * PD6  - PIN6                      (output low).
+ * PD7  - PIN7                      (output low).
+ * PD8  - PIN8                      (output low).
+ * PD9  - PIN9                      (output low).
+ * PD10 - PIN10                     (output low).
  * PD11 - PIN11                     (input pullup).
  * PD12 - PIN12                     (input pullup).
  * PD13 - PIN13                     (input pullup).
@@ -607,14 +607,14 @@
 #define VAL_GPIOD_MODER             (PIN_MODE_ALTERNATE(GPIOD_CAN1_RX) |           \
                                      PIN_MODE_ALTERNATE(GPIOD_CAN1_TX) |           \
                                      PIN_MODE_ALTERNATE(GPIOD_SD_CMD) |     \
-                                     PIN_MODE_INPUT(GPIOD_PIN3) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN4) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN5) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN6) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN7) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN8) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN9) |           \
-                                     PIN_MODE_INPUT(GPIOD_PIN10) |          \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN3) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN4) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN5) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN6) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN7) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN8) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN9) |           \
+                                     PIN_MODE_OUTPUT(GPIOD_PIN10) |          \
                                      PIN_MODE_INPUT(GPIOD_PIN11) |          \
                                      PIN_MODE_INPUT(GPIOD_PIN12) |          \
                                      PIN_MODE_INPUT(GPIOD_PIN13) |          \
@@ -655,14 +655,14 @@
 #define VAL_GPIOD_PUPDR             (PIN_PUPDR_FLOATING(GPIOD_CAN1_RX) |         \
                                      PIN_PUPDR_FLOATING(GPIOD_CAN1_TX) |         \
                                      PIN_PUPDR_FLOATING(GPIOD_SD_CMD) |     \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN3) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN4) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN5) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN6) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN7) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN8) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN9) |         \
-                                     PIN_PUPDR_PULLUP(GPIOD_PIN10) |        \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN3) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN4) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN5) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN6) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN7) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN8) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN9) |         \
+                                     PIN_PUPDR_FLOATING(GPIOD_PIN10) |        \
                                      PIN_PUPDR_PULLUP(GPIOD_PIN11) |        \
                                      PIN_PUPDR_PULLUP(GPIOD_PIN12) |        \
                                      PIN_PUPDR_PULLUP(GPIOD_PIN13) |        \
@@ -671,14 +671,14 @@
 #define VAL_GPIOD_ODR               (PIN_ODR_HIGH(GPIOD_CAN1_RX) |             \
                                      PIN_ODR_HIGH(GPIOD_CAN1_TX) |             \
                                      PIN_ODR_HIGH(GPIOD_SD_CMD) |           \
-                                     PIN_ODR_HIGH(GPIOD_PIN3) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN4) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN5) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN6) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN7) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN8) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN9) |             \
-                                     PIN_ODR_HIGH(GPIOD_PIN10) |            \
+                                     PIN_ODR_LOW(GPIOD_PIN3) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN4) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN5) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN6) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN7) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN8) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN9) |             \
+                                     PIN_ODR_LOW(GPIOD_PIN10) |            \
                                      PIN_ODR_HIGH(GPIOD_PIN11) |            \
                                      PIN_ODR_HIGH(GPIOD_PIN12) |            \
                                      PIN_ODR_HIGH(GPIOD_PIN13) |            \
