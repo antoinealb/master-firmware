@@ -4,5 +4,6 @@
 #include <hal.h>
 
 extern const USBConfig ethernet_usbcfg;
+void usb_ethernet_start(void);
 
 #endif

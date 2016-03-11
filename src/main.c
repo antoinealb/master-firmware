@@ -83,6 +83,7 @@ int main(void) {
 
     /* Initializes a serial-over-USB CDC driver.  */
     sduObjectInit(&SDU1);
+#if 0
     sduStart(&SDU1, &serusbcfg);
 
     sdStart(&SD3, NULL);
@@ -97,11 +98,9 @@ int main(void) {
     chThdSleepMilliseconds(1500);
     usbStart(serusbcfg.usbp, &usbcfg);
     usbConnectBus(serusbcfg.usbp);
+#endif
 
-    usbDisconnectBus(&USBD2);
-    chThdSleepMilliseconds(1500);
-    usbStart(&USBD2, &ethernet_usbcfg);
-    usbConnectBus(&USBD2);
+    usb_ethernet_start();
 
     /* Shell manager initialization.  */
     shellInit();

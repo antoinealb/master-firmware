@@ -1,4 +1,9 @@
 #include "usbconf_ethernet.h"
+#include "usbconf.h"
+#include <ch.h>
+#include <hal.h>
+
+#include <chprintf.h>
 
 /*Endpoints to be used for USBD1.  */
 #define USBD1_DATA_REQUEST_EP           1
@@ -182,6 +187,13 @@ static const USBDescriptor *get_descriptor(USBDriver *usbp,
 static USBInEndpointState ep1instate;
 static USBOutEndpointState ep1outstate;
 
+static SEMAPHORE_DECL(usb_configured, 0);
+
+static void dataReceived(USBDriver *usbp, usbep_t ep)
+{
+    chSemSignalI(&usb_configured);
+}
+
 /** @brief   EP1 initialization structure (both IN and OUT).  */
 static const USBEndpointConfig ep1config = {
     USB_EP_MODE_TYPE_BULK,
@@ -211,6 +223,8 @@ static const USBEndpointConfig ep2config = {
     NULL
 };
 
+    static input_queue_t iqueue;
+
 /** Handles the USB driver global events.  */
 static void usb_event(USBDriver *usbp, usbevent_t event) {
 
@@ -223,11 +237,15 @@ static void usb_event(USBDriver *usbp, usbevent_t event) {
             chSysLockFromISR();
 
             usbInitEndpointI(usbp, USBD1_DATA_REQUEST_EP, &ep1config);
-            usbInitEndpointI(usbp, USBD1_INTERRUPT_REQUEST_EP, &ep2config);
+            //usbInitEndpointI(usbp, USBD1_INTERRUPT_REQUEST_EP, &ep2config);
 
             /* Resetting the state of the CDC subsystem.*/
-            /* TODO */
+            iqResetI(&iqueue);
+            usbPrepareQueuedReceive(usbp, USBD1_DATA_REQUEST_EP, &iqueue, 40);
+            usbStartReceiveI(usbp, USBD1_DATA_REQUEST_EP);
+            chSemSignalI(&usb_configured);
 
+            sduConfigureHookI(&SDU1);
             chSysUnlockFromISR();
             return;
         case USB_EVENT_SUSPEND:
@@ -240,10 +258,47 @@ static void usb_event(USBDriver *usbp, usbevent_t event) {
     return;
 }
 
+static void sof_cb(USBDriver *p)
+{
+    __asm__("BKPT");
+}
+
 /** USB driver configuration.  */
 const USBConfig ethernet_usbcfg = {
     usb_event,
     get_descriptor,
-    sduRequestsHook,
+    NULL,
     NULL
 };
+
+static void usb_ethernet_thread(void *p)
+{
+    (void) p;
+
+    chRegSetThreadName("usb_ethernet");
+    static uint8_t ib[64];
+
+    iqObjectInit(&iqueue, ib, 64, NULL, NULL);
+    usbDisconnectBus(&USBD2);
+    chThdSleepMilliseconds(1500);
+    usbStart(&USBD2, &ethernet_usbcfg);
+    usbConnectBus(&USBD2);
+
+    chprintf((BaseSequentialStream *)&SDU1 , "usb cdc conf\r\n");
+    chSemWait(&usb_configured);
+    chprintf((BaseSequentialStream *)&SDU1 , "usb cdc ok\r\n");
+
+
+    while (1) {
+        chSemWait(&usb_configured);
+        chprintf((BaseSequentialStream *)&SDU1 , "rx\r\n");
+    }
+}
+
+void usb_ethernet_start(void)
+{
+    static THD_WORKING_AREA(stack, 1024);
+    chThdCreateStatic(stack,
+                      sizeof(stack), NORMALPRIO,
+                      usb_ethernet_thread, NULL);
+}
